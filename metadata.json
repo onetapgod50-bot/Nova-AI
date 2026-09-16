@@ -1,0 +1,6 @@
+{
+  "name": "BuildNova",
+  "description": "Intelligent infrastructure and construction management platform connecting engineers, managers, and supervisors.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

@@ -12,17 +12,33 @@ const ROLES: { value: Role; label: string }[] = [
   { value: "supervisor", label: "Supervisor" },
 ];
 
+const DEMO_ACCOUNTS: Record<Role, { email: string; pass: string; name: string }> = {
+  engineer: { email: "engineer@buildnova.dev", pass: "password123", name: "Aisha (Planning Engineer)" },
+  manager: { email: "manager@buildnova.dev", pass: "password123", name: "David (Project Manager)" },
+  supervisor: { email: "marcus@buildnova.dev", pass: "password123", name: "Marcus (Site Supervisor)" },
+};
+
 export default function LoginPage() {
   const router = useRouter();
   const [role, setRole] = useState<Role>("engineer");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
+  const [infoNotice, setInfoNotice] = useState("");
   const [loading, setLoading] = useState(false);
+
+  function fillDemo(targetRole: Role) {
+    setRole(targetRole);
+    setEmail(DEMO_ACCOUNTS[targetRole].email);
+    setPassword(DEMO_ACCOUNTS[targetRole].pass);
+    setError("");
+    setInfoNotice("");
+  }
 
   async function handleSubmit(e: FormEvent) {
     e.preventDefault();
     setError("");
+    setInfoNotice("");
     setLoading(true);
     try {
       const res = await fetch("/api/auth/login", {
@@ -63,7 +79,11 @@ export default function LoginPage() {
               <button
                 key={r.value}
                 type="button"
-                onClick={() => setRole(r.value)}
+                onClick={() => {
+                  setRole(r.value);
+                  setError("");
+                  setInfoNotice("");
+                }}
                 className={`rounded px-2 py-1.5 text-xs font-medium transition-colors ${
                   role === r.value ? "bg-surface text-brand shadow-sm" : "text-inkmuted"
                 }`}
@@ -73,7 +93,18 @@ export default function LoginPage() {
             ))}
           </div>
 
-          <form onSubmit={handleSubmit} className="mt-5 space-y-3">
+          <div className="mt-3 flex items-center justify-between rounded bg-surface2/60 px-2.5 py-1.5 text-xs">
+            <span className="truncate text-inkmuted">Demo: {DEMO_ACCOUNTS[role].email}</span>
+            <button
+              type="button"
+              onClick={() => fillDemo(role)}
+              className="ml-2 shrink-0 font-medium text-brand hover:underline"
+            >
+              Fill demo
+            </button>
+          </div>
+
+          <form onSubmit={handleSubmit} className="mt-4 space-y-3">
             <div>
               <label className="mb-1 block text-xs font-medium text-inkmuted">Email / Username</label>
               <input
@@ -103,6 +134,12 @@ export default function LoginPage() {
               </div>
             )}
 
+            {infoNotice && (
+              <div className="rounded-md border border-line bg-surface2 px-3 py-2 text-xs text-inkmuted">
+                {infoNotice}
+              </div>
+            )}
+
             <button
               type="submit"
               disabled={loading}
@@ -112,10 +149,18 @@ export default function LoginPage() {
             </button>
 
             <div className="flex items-center justify-between pt-1 text-xs text-inkmuted">
-              <button type="button" onClick={() => alert("Password reset isn't set up in this demo yet.")} className="hover:text-brand">
+              <button
+                type="button"
+                onClick={() => setInfoNotice("Password reset is not enabled in this demo sandbox.")}
+                className="hover:text-brand"
+              >
                 Forgot password?
               </button>
-              <button type="button" onClick={() => alert("Account creation isn't open yet.")} className="hover:text-brand">
+              <button
+                type="button"
+                onClick={() => setInfoNotice("Account registration is managed by project administrators.")}
+                className="hover:text-brand"
+              >
                 Create account
               </button>
             </div>
