@@ -1,0 +1,84 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --bg: #fafaf8;
+  --surface: #ffffff;
+  --surface-2: #f1f1ec;
+  --ink: #14201a;
+  --ink-muted: #5b665f;
+  --line: #e4e1d8;
+  --brand: #1f5d42;
+  --brand-bright: #3e9468;
+  --brand-soft: #e7f0ea;
+  --blueprint: #2e5c8a;
+  --amber: #c67c1f;
+  --clay: #b65c38;
+}
+
+.dark {
+  --bg: #10140f;
+  --surface: #171c17;
+  --surface-2: #1e2620;
+  --ink: #edf1ee;
+  --ink-muted: #9aa69e;
+  --line: #2a332c;
+  --brand: #3e9468;
+  --brand-bright: #57c088;
+  --brand-soft: #1b2b22;
+  --blueprint: #6fa3d6;
+  --amber: #e0a34c;
+  --clay: #d97a54;
+}
+
+* {
+  border-color: var(--line);
+}
+
+html {
+  color-scheme: light;
+}
+html.dark {
+  color-scheme: dark;
+}
+
+body {
+  background-color: var(--bg);
+  color: var(--ink);
+}
+
+::selection {
+  background: var(--brand-soft);
+  color: var(--brand);
+}
+
+:focus-visible {
+  outline: 2px solid var(--brand-bright);
+  outline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+.blueprint-field {
+  background-image: linear-gradient(var(--line) 1px, transparent 1px),
+    linear-gradient(90deg, var(--line) 1px, transparent 1px);
+  background-size: 28px 28px;
+}
+
+.scrollbar-thin::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+.scrollbar-thin::-webkit-scrollbar-thumb {
+  background: var(--line);
+  border-radius: 999px;
+}
